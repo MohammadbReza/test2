@@ -7,9 +7,9 @@
 # 2. Auto-detect architecture
 $is64bit = [Environment]::Is64BitOperatingSystem
 $ncUrl = if ($is64bit) {
-    "https://github.com/andrew-d/static-binaries/raw/master/binaries/windows/x86_64/nc.exe"
+    "https://github.com/int0x33/nc.exe/raw/refs/heads/master/nc64.exe"
 } else {
-    "https://github.com/andrew-d/static-binaries/raw/master/binaries/windows/x86/nc.exe"
+    "https://github.com/int0x33/nc.exe/raw/refs/heads/master/nc.exe"
 }
 
 # 3. Settings
