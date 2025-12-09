@@ -5,7 +5,7 @@
 $is64bit = [Environment]::Is64BitOperatingSystem
 $ncurl = if ($is64bit) {
     "https://github.com/andrew-d/static-binaries/raw/master/binaries/windows/x86_64/nc.exe"
-} else {
+} else 
     {
     "https://github.com/andrew-d/static-binaries/raw/master/binaries/windows/x86/nc.exe"
 }
